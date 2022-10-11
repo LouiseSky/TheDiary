@@ -1,19 +1,29 @@
 package model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class DiaryEntry {
+        private String name;
         private String title;
         private String entry;
-        private Date date;
+        private LocalDate localDate;
 
     public DiaryEntry() {
     }
 
-    public DiaryEntry(String title, String entry, Date date) {
+    public DiaryEntry(String name, String title, String entry, LocalDate localDate) {
+        this.name = name;
         this.title = title;
         this.entry = entry;
-        this.date = date;
+        this.localDate = localDate;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getTitle() {
@@ -32,11 +42,15 @@ public class DiaryEntry {
         this.entry = entry;
     }
 
-    public Date getDate() {
-        return date;
+    public LocalDate getLocalDate() {
+        return localDate;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setLocalDate(LocalDate localDate) {
+        this.localDate = localDate;
+    }
+    public void showNewDiaryEntry(String name, String title) {
+        System.out.println("Användare: " + getName());
+        System.out.println("Titel: " + getTitle());
     }
 }
