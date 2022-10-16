@@ -15,5 +15,8 @@ public class MainMenu {
             System.out.println("3. Avsluta programmet");
             System.out.println("Var god välj: 1, 2 eller 3.");
     }
-
+public static int main() {
+    System.out.println("Välkommen till menu 2");
+    return 2;
+}
 }

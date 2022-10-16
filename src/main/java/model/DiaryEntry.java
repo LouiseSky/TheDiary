@@ -49,8 +49,10 @@ public class DiaryEntry {
     public void setLocalDate(LocalDate localDate) {
         this.localDate = localDate;
     }
-    public void showNewDiaryEntry(String name, String title) {
-        System.out.println("Användare: " + getName());
-        System.out.println("Titel: " + getTitle());
+    public static void showDiaryEntry(String title, String entry, LocalDate localDate) {
+        System.out.println("Titel: " + title);
+        System.out.println("Inlägg: " + entry);
+        System.out.println("Datum: " + localDate);
+        System.out.println("-------------------");
     }
 }
