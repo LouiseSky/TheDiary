@@ -8,12 +8,12 @@ public class MainMenu {
         System.out.println("3. Avsluta programmet");
         System.out.println("Var god välj: 1, 2 eller 3.");
     }
+
     public static void menuTwo(String name) {
-            System.out.println("Aktiv användare: " + name);
-            System.out.println("Du har tre olika val");
-            System.out.println("1. Läsa din dagbok ");
-            System.out.println("2. Skriva inlägg ");
-            System.out.println("3. Avsluta programmet");
-            System.out.println("Var god välj: 1, 2 eller 3.");
+        System.out.println("Aktiv användare: " + name);
+        System.out.println("1. Läsa din dagbok");
+        System.out.println("2. Skriva inlägg");
+        System.out.println("3. Avsluta programmet");
+        System.out.println("Var god välj: 1, 2 eller 3.");
     }
 }

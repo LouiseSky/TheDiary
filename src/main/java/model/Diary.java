@@ -33,6 +33,7 @@ public class Diary {
     public void setDiaryEntryList(List<DiaryEntry> diaryEntryList) {
         this.diaryEntryList = diaryEntryList;
     }
+
     public void showDiary() {
         System.out.println("Namn på användare: " + getUser());
     }

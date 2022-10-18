@@ -16,50 +16,55 @@ public class Main {
         mapper.registerModule(new JavaTimeModule());
         Scanner input = new Scanner(System.in);
 
-        Path pathOne = Paths.get("src/main/resources/users.json");
-        Path pathTwo = Paths.get("src/main/resources/diaryEntry.json");
+        Path pathUsers = Paths.get("src/main/resources/users.json");
 
-        List<DiaryEntry> listOfDiaryEntry;
         List<User> listOfUsers;
 
         String userStartMenu = "Ingen";
-        String choiceOfUserInList;
 
         int startMenu = 1;
 
         do {
-            if(startMenu == 1) {
+            if (startMenu == 1) {
                 try {
-                MainMenu.menuOne(userStartMenu);
-                int choiceMenuOne = input.nextInt();
+                    MainMenu.menuOne(userStartMenu);
+                    int choiceMenuOne = input.nextInt();
 
                     if (choiceMenuOne == 1) {
                         System.out.println("Lista över användare: ");
 
-                        listOfUsers = List.of(mapper.readValue(pathOne.toFile(), User[].class));
+                        listOfUsers = List.of(mapper.readValue(pathUsers.toFile(), User[].class));
                         for (User user : listOfUsers) {
                             System.out.println(user.getName());
                         }
                         input.nextLine();
-                        System.out.println("Var god välj en av användarna i listan. Om du inte vill ha någon " +
-                                "av användarna i listan, skriv X");
-                        choiceOfUserInList = input.nextLine();
 
+                        System.out.println("Var god välj en av användarna i listan. Om du inte vill ha någon " +
+                                "av användarna i listan, skriv " + "-" + " så kommer du tillbaka till huvudmenyn");
+                        String choiceOfUserInList = input.nextLine();
+
+                        boolean matchingUser = false;
                         for (User user : listOfUsers) {
                             if (choiceOfUserInList.equalsIgnoreCase(user.getName())) {
                                 User.setCurrentUserName(user.getName());
+                                matchingUser = true;
                                 startMenu = 2;
                                 break;
                             }
                         }
-                    }if (choiceMenuOne == 2) {
+                        if (!matchingUser) {
+                            System.out.println("Du valde ingen befintlig användare i listan.");
+                        }
+                    }
+                    if (choiceMenuOne == 2) {
                         User.chooseNewUser(mapper, input);
-                    }if (choiceMenuOne == 3) {
-                        System.out.println("Hejdå, tack för idag! Programmet avslutas");
+                    }
+                    if (choiceMenuOne == 3) {
+                        System.out.println("Hejdå, tack för idag! Programmet avslutas.");
                         break;
                     }
-                } catch(InputMismatchException e) {
-                    System.out.println("Nu blev det fel.");
+                } catch (InputMismatchException e) {
+                    System.out.println("Nu blev det fel, du behöver skriva in en siffra mellan 1-3.");
                     input.nextLine();
                 }
             }
@@ -69,22 +74,18 @@ public class Main {
                     int choiceMenuTwo = input.nextInt();
 
                     if (choiceMenuTwo == 1) {
-                        listOfDiaryEntry = List.of(mapper.readValue(pathTwo.toFile(), DiaryEntry[].class));
-                        for (DiaryEntry diaryEntry : listOfDiaryEntry) {
-                            if (User.getCurrentUserName().equalsIgnoreCase(String.valueOf(diaryEntry.getName()))) {
-                                DiaryEntry.showDiaryEntry(diaryEntry.getTitle(), diaryEntry.getEntry(), diaryEntry.getLocalDate());
-                            }
-                        }
+                        DiaryEntry.readListOfDiaryEntries(mapper);
                     }
                     if (choiceMenuTwo == 2) {
                         DiaryEntry.writeNewDiaryEntry(mapper, input, User.getCurrentUserName());
                     }
                     if (choiceMenuTwo == 3) {
+                        System.out.println("Tack för idag " + User.getCurrentUserName() + "! Programmet avslutas.");
                         break;
                     }
                 }
             } catch (InputMismatchException e) {
-                System.out.println("Du skrev in något fel.");
+                System.out.println("Nu blev det fel, du behöver skriva in en siffra mellan 1-3.");
                 input.nextLine();
             }
         } while (true);
