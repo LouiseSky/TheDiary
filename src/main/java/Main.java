@@ -23,6 +23,7 @@ public class Main {
         String userStartMenu = "Ingen";
 
         int startMenu = 1;
+        // TODO Lägg till JAVADOC
 
         do {
             if (startMenu == 1) {
