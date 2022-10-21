@@ -12,6 +12,13 @@ import java.util.List;
 import java.util.Scanner;
 
 public class DiaryEntry {
+
+    private static final ObjectMapper mapper = new ObjectMapper();
+    private static final Scanner input = new Scanner(System.in);
+    private static final Path pathDiaryEntries = Paths.get("src/main/resources/diaryEntries.json");
+    private static List<DiaryEntry> listOfDiaryEntries;
+
+
     private String name;
     private String title;
     private String entry;
@@ -89,9 +96,8 @@ public class DiaryEntry {
         System.out.println("-----------------------------");
     }
 
-    public static void readListOfDiaryEntries(ObjectMapper mapper) throws IOException {
-        Path pathDiaryEntries = Paths.get("src/main/resources/diaryEntries.json");
-        List<DiaryEntry> listOfDiaryEntries;
+    public static void readListOfDiaryEntries() throws IOException {
+        mapper.registerModule(new JavaTimeModule());
         listOfDiaryEntries = List.of(mapper.readValue(pathDiaryEntries.toFile(), DiaryEntry[].class));
 
         boolean userHasWrittenADiaryEntry = false;
@@ -107,23 +113,25 @@ public class DiaryEntry {
         }
     }
 
-    public static void writeNewDiaryEntry(ObjectMapper mapper, Scanner input, String name) throws IOException {
+    /**
+     * Method to write a new diary with a specific user
+     * @param name is variable for the user who writes the diary entry.
+     * @throws IOException because list is transfer to JSON-file
+     */
+    public static void writeNewDiaryEntry(String name) throws IOException {
         mapper.registerModule(new JavaTimeModule());
         LocalDate localDate = LocalDate.now();
-        Path pathDiaryEntries = Paths.get("src/main/resources/diaryEntries.json");
 
-        input.nextLine();
         System.out.println("Fyll i titeln på ditt inlägg: ");
         String choiceOfTitle = input.nextLine();
         System.out.println("Skriv ditt inlägg: ");
         String choiceOfEntry = input.nextLine();
 
         DiaryEntry newDiaryEntry = new DiaryEntry(name, choiceOfTitle, choiceOfEntry, localDate);
-        List<DiaryEntry> diaryEntries =
-                new ArrayList<>(List.of(mapper.readValue(pathDiaryEntries.toFile(), DiaryEntry[].class)));
-        diaryEntries.add(newDiaryEntry);
+        listOfDiaryEntries = new ArrayList<>(List.of(mapper.readValue(pathDiaryEntries.toFile(), DiaryEntry[].class)));
+        listOfDiaryEntries.add(newDiaryEntry);
 
         DiaryEntry.showDiaryEntry(choiceOfTitle, choiceOfEntry, localDate);
-        mapper.writeValue(pathDiaryEntries.toFile(), diaryEntries);
+        mapper.writeValue(pathDiaryEntries.toFile(), listOfDiaryEntries);
     }
 }

@@ -5,9 +5,9 @@ import model.MainMenu;
 import model.User;
 
 import java.io.IOException;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
 import java.util.*;
 
 public class Main {
@@ -17,13 +17,11 @@ public class Main {
         Scanner input = new Scanner(System.in);
 
         Path pathUsers = Paths.get("src/main/resources/users.json");
-
         List<User> listOfUsers;
 
         String userStartMenu = "Ingen";
 
         int startMenu = 1;
-        // TODO Lägg till JAVADOC
 
         do {
             if (startMenu == 1) {
@@ -32,17 +30,13 @@ public class Main {
                     int choiceMenuOne = input.nextInt();
 
                     if (choiceMenuOne == 1) {
-                        System.out.println("Lista över användare: ");
+                        User.showUsersInList();
+                        input.nextLine();
+                        User.chooseUserInList();
+
+                        String choiceOfUserInList = input.nextLine();
 
                         listOfUsers = List.of(mapper.readValue(pathUsers.toFile(), User[].class));
-                        for (User user : listOfUsers) {
-                            System.out.println(user.getName());
-                        }
-                        input.nextLine();
-
-                        System.out.println("Var god välj en av användarna i listan. Om du inte vill ha någon " +
-                                "av användarna i listan, skriv " + "-" + " så kommer du tillbaka till huvudmenyn");
-                        String choiceOfUserInList = input.nextLine();
 
                         boolean matchingUser = false;
                         for (User user : listOfUsers) {
@@ -54,18 +48,18 @@ public class Main {
                             }
                         }
                         if (!matchingUser) {
-                            System.out.println("Du valde ingen befintlig användare i listan.");
+                            User.noMatchingUserInList();
                         }
                     }
                     if (choiceMenuOne == 2) {
-                        User.chooseNewUser(mapper, input);
+                        User.chooseNewUser();
                     }
                     if (choiceMenuOne == 3) {
-                        System.out.println("Hejdå, tack för idag! Programmet avslutas.");
+                        MainMenu.exitProgram();
                         break;
                     }
                 } catch (InputMismatchException e) {
-                    System.out.println("Nu blev det fel, du behöver skriva in en siffra mellan 1-3.");
+                    showMessageIfItIsAnException();
                     input.nextLine();
                 }
             }
@@ -75,20 +69,22 @@ public class Main {
                     int choiceMenuTwo = input.nextInt();
 
                     if (choiceMenuTwo == 1) {
-                        DiaryEntry.readListOfDiaryEntries(mapper);
-                    }
-                    if (choiceMenuTwo == 2) {
-                        DiaryEntry.writeNewDiaryEntry(mapper, input, User.getCurrentUserName());
-                    }
-                    if (choiceMenuTwo == 3) {
-                        System.out.println("Tack för idag " + User.getCurrentUserName() + "! Programmet avslutas.");
+                        DiaryEntry.readListOfDiaryEntries();
+                    } else if (choiceMenuTwo == 2) {
+                        DiaryEntry.writeNewDiaryEntry(User.getCurrentUserName());
+                    } else {
+                        MainMenu.exitProgramAddUsername();
                         break;
                     }
                 }
             } catch (InputMismatchException e) {
-                System.out.println("Nu blev det fel, du behöver skriva in en siffra mellan 1-3.");
+                showMessageIfItIsAnException();
                 input.nextLine();
             }
         } while (true);
+    }
+
+    private static void showMessageIfItIsAnException() {
+        System.out.println("Nu blev det fel, du behöver skriva in en siffra mellan 1-3.");
     }
 }
