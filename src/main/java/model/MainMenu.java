@@ -8,9 +8,9 @@ public class MainMenu {
         System.out.println("3. Avsluta programmet");
         System.out.println("Var god välj: 1, 2 eller 3.");
     }
-public static void exitProgram() {
-    System.out.println("Hejdå, tack för idag! Programmet avslutas.");
-}
+    public static void exitProgram() {
+        System.out.println("Hejdå, tack för idag! Programmet avslutas.");
+    }
 
     /**
      * Shows menu two when a user is chosen.

@@ -66,32 +66,9 @@ public class DiaryEntry {
         this.localDate = localDate;
     }
 
-    public static String lineLength(String str, int width) {
-        StringBuilder sb = new StringBuilder();
-
-        while (true) {
-            if (str.length() <= width) {
-                sb.append(str);
-                break;
-            }
-
-            int cutOff = 0;
-            int temp = 0;
-            while (((temp = str.indexOf(" ", ++temp)) < width) && (temp >= 0)) {
-                cutOff = temp;
-            }
-            String newString = str.substring(0, cutOff);
-
-            sb.append(newString);
-            sb.append("\n");
-            str = str.substring(cutOff);
-        }
-        return sb.toString();
-    }
-
     public static void showDiaryEntry(String title, String entry, LocalDate localDate) {
         System.out.println("Titel: " + title);
-        System.out.println("Inlägg: " + lineLength(entry, 30));
+        System.out.println("Inlägg: " + entry);
         System.out.println("Datum: " + localDate);
         System.out.println("-----------------------------");
     }
@@ -115,6 +92,7 @@ public class DiaryEntry {
 
     /**
      * Method to write a new diary with a specific user
+     *
      * @param name is variable for the user who writes the diary entry.
      * @throws IOException because list is transfer to JSON-file
      */
